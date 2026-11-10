@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type vm:CoverageViewModel}">
             <views:CoverageView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DiagnosticsViewModel}"><views:DiagnosticsView/></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><views:SettingsView/></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LogsViewModel}"><views:LogsView/></DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -31,6 +34,9 @@
                     <ListBoxItem Content="Статус" Tag="status" IsSelected="True" Padding="12,8"/>
                     <ListBoxItem Content="Стратегии" Tag="strategies" Padding="12,8"/>
                     <ListBoxItem Content="Покрытие" Tag="coverage" Padding="12,8"/>
+                    <ListBoxItem Content="Проверка" Tag="diagnostics" Padding="12,8"/>
+                    <ListBoxItem Content="Настройки" Tag="settings" Padding="12,8"/>
+                    <ListBoxItem Content="Логи" Tag="logs" Padding="12,8"/>
                 </ListBox>
             </StackPanel>
         </Border>

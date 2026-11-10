@@ -39,6 +39,9 @@ public partial class MainWindow : Window
             "status" => viewModel.Status,
             "strategies" => viewModel.Strategies,
             "coverage" => viewModel.Coverage,
+            "diagnostics" => viewModel.Diagnostics,
+            "settings" => viewModel.Settings,
+            "logs" => viewModel.Logs,
             _ => viewModel.Status
         };
     }

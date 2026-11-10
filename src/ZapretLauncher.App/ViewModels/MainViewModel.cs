@@ -10,6 +10,9 @@ public partial class MainViewModel : ObservableObject
         Status = new StatusViewModel(services);
         Strategies = new StrategiesViewModel(services);
         Coverage = new CoverageViewModel(services);
+        Diagnostics = new DiagnosticsViewModel(services);
+        Settings = new SettingsViewModel(services);
+        Logs = new LogsViewModel(services);
         SelectedContent = Status;
         Status.TestAllRequested += () =>
         {
@@ -22,6 +25,9 @@ public partial class MainViewModel : ObservableObject
     public StatusViewModel Status { get; }
     public StrategiesViewModel Strategies { get; }
     public CoverageViewModel Coverage { get; }
+    public DiagnosticsViewModel Diagnostics { get; }
+    public SettingsViewModel Settings { get; }
+    public LogsViewModel Logs { get; }
 
     [ObservableProperty] private object? selectedContent;
 
