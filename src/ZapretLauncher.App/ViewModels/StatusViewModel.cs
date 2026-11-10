@@ -8,6 +8,7 @@ using ZapretLauncher.Core.Diagnostics;
 using ZapretLauncher.Core.Networking;
 using ZapretLauncher.Core.Probing;
 using ZapretLauncher.Core.Runtime;
+using ZapretLauncher.Core.Strategies;
 
 namespace ZapretLauncher.App.ViewModels;
 
@@ -40,23 +41,30 @@ public partial class StatusViewModel : ObservableObject
     [ObservableProperty] private string discordStatus = "—";
     [ObservableProperty] private string googleStatus = "—";
 
-    partial void OnIsRunningChanged(bool value) =>
+    partial void OnIsRunningChanged(bool value)
+    {
         ToggleLabel = value ? "Выключить обход" : "Включить обход";
+        if (StatusMessage.Length == 0
+            || StatusMessage == "Обход выключен."
+            || StatusMessage == "Обход запущен автоматически."
+            || StatusMessage.StartsWith("Обход включён", StringComparison.Ordinal))
+        {
+            StatusMessage = value ? "Обход включён." : "Обход выключен.";
+        }
+    }
 
     public async Task InitializeAsync()
     {
         var networkKey = new NetworkKeyProvider().GetKey();
-        if (_services.Settings.LastGoodByNetwork.TryGetValue(networkKey, out var known)
-            && _services.Catalog.All.Any(s => s.Id == known.StrategyId))
-        {
-            _services.Settings.SelectedStrategyId = known.StrategyId;
-        }
-
-        var selected = _services.Catalog.All
-            .FirstOrDefault(s => s.Id == _services.Settings.SelectedStrategyId)
-            ?? _services.Catalog.All[0];
+        _services.Settings.LastGoodByNetwork.TryGetValue(networkKey, out var known);
+        var selected = StrategySelection.Resolve(
+            _services.Catalog.All,
+            _services.Settings.SelectedStrategyId,
+            known?.StrategyId);
+        selected ??= _services.Catalog.All[0];
         _services.Settings.SelectedStrategyId = selected.Id;
         CurrentStrategyName = selected.Name;
+        StrategySelected?.Invoke(selected.Id);
         EngineVersion = _services.Engine.CurrentVersion;
         var key = networkKey.Split('|');
         NetworkName = key.Length >= 3 && key[2].Length > 0 ? key[2] : "Проводная сеть";
@@ -154,9 +162,23 @@ public partial class StatusViewModel : ObservableObject
     private void DismissFirstRun() => ShowFirstRunBanner = false;
 
     public event Action? TestAllRequested;
+    public event Action<string>? StrategySelected;
 
     [RelayCommand]
     private void RequestTestAll() => TestAllRequested?.Invoke();
+
+    /// <summary>Keeps the status page in sync when another screen starts a strategy.</summary>
+    public void SyncStrategy(string strategyId)
+    {
+        var strategy = _services.Catalog.All.FirstOrDefault(s => s.Id == strategyId);
+        if (strategy is null) return;
+
+        CurrentStrategyName = strategy.Name;
+        IsRunning = _services.Runner.IsRunning;
+        StatusMessage = IsRunning
+            ? $"Обход включён: {strategy.Name}."
+            : "Обход выключен.";
+    }
 
     public async Task SwitchToAsync(string strategyId)
     {
@@ -167,6 +189,7 @@ public partial class StatusViewModel : ObservableObject
             if (_services.Runner.IsRunning) await _services.Runner.StopAsync();
             await StartSelectedAsync();
             StatusMessage = $"Переключено на {CurrentStrategyName}.";
+            StrategySelected?.Invoke(strategyId);
         }
         catch (Exception ex)
         {

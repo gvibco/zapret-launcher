@@ -44,6 +44,11 @@ public partial class StrategiesViewModel : ObservableObject
 
     public ObservableCollection<StrategyRow> Strategies { get; } = new();
 
+    public event Action<string>? StrategyStarted;
+
+    public void SelectById(string strategyId) =>
+        Selected = Strategies.FirstOrDefault(r => r.Strategy.Id == strategyId);
+
     [ObservableProperty] private StrategyRow? selected;
     [ObservableProperty] private string argsPreview = "";
     [ObservableProperty] private string progressText = "";
@@ -154,5 +159,6 @@ public partial class StrategiesViewModel : ObservableObject
             Path.Combine(_services.EngineDir, "winws.exe"), args);
         _services.Settings.SelectedStrategyId = strategy.Id;
         _services.SaveSettings();
+        StrategyStarted?.Invoke(strategy.Id);
     }
 }

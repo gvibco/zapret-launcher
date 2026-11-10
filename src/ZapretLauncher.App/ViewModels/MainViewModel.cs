@@ -14,6 +14,8 @@ public partial class MainViewModel : ObservableObject
         Settings = new SettingsViewModel(services);
         Logs = new LogsViewModel(services);
         SelectedContent = Status;
+        Strategies.StrategyStarted += id => Status.SyncStrategy(id);
+        Status.StrategySelected += id => Strategies.SelectById(id);
         Status.TestAllRequested += () =>
         {
             SelectedContent = Strategies;
