@@ -38,6 +38,18 @@ public class CommandBuilderTests
     }
 
     [Fact]
+    public void Build_ExpandsGamePlaceholdersInProfileFilters()
+    {
+        var context = Context with { GameTcp = "2000-3000", GameUdp = "4000-5000" };
+
+        var args = new CommandBuilder().Build(LoadAlt11(), context);
+
+        Assert.DoesNotContain(args, a => a.Contains("%GameFilter", StringComparison.Ordinal));
+        Assert.Contains("--filter-tcp=2000-3000", args);
+        Assert.Contains("--filter-udp=4000-5000", args);
+    }
+
+    [Fact]
     public void Build_KeepsDesyncParameters()
     {
         var args = new CommandBuilder().Build(LoadAlt11(), Context);

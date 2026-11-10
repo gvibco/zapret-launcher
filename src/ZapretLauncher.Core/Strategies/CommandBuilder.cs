@@ -38,8 +38,8 @@ public sealed class CommandBuilder
     private static void AddProfile(List<string> args, StrategyProfile profile, BuildContext context)
     {
         var filter = profile.Filter;
-        Add(args, "--filter-tcp", filter.Tcp);
-        Add(args, "--filter-udp", filter.Udp);
+        Add(args, "--filter-tcp", filter.Tcp is null ? null : Expand(filter.Tcp, context));
+        Add(args, "--filter-udp", filter.Udp is null ? null : Expand(filter.Udp, context));
         Add(args, "--filter-l3", filter.L3);
         Add(args, "--filter-l7", filter.L7);
 
