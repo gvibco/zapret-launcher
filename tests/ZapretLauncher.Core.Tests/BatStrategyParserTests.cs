@@ -35,4 +35,18 @@ public class BatStrategyParserTests
         Assert.Equal("discord,stun", second.Filter.L7);
         Assert.Equal(6, second.Desync.Repeats);
     }
+
+    [Fact]
+    public void Parse_UnescapesCmdCaretExclamation()
+    {
+        const string bat = """
+            @echo off
+            start "zapret: %~n0" /min "%BIN%winws.exe" --wf-tcp=443 ^
+            --filter-tcp=443 --dpi-desync=fake --dpi-desync-fake-tls=^!
+            """;
+
+        var strategy = BatStrategyParser.Parse(bat, "general (FAKE TLS AUTO).bat");
+
+        Assert.Equal(new[] { "!" }, strategy.Profiles[0].Desync.FakeTls);
+    }
 }

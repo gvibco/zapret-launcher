@@ -6101,7 +6101,7 @@
           "fakeStun": [],
           "fakeTls": [
             "0x00000000",
-            "^!"
+            "!"
           ],
           "fakeTlsMod": "rnd,dupsid,sni=www.google.com",
           "fakeUnknown": [],
@@ -6141,7 +6141,7 @@
           "fakeStun": [],
           "fakeTls": [
             "0x00000000",
-            "^!"
+            "!"
           ],
           "fakeTlsMod": "rnd,dupsid,sni=www.google.com",
           "fakeUnknown": [],
@@ -6191,7 +6191,7 @@
           "fakeStun": [],
           "fakeTls": [
             "0x00000000",
-            "^!"
+            "!"
           ],
           "fakeTlsMod": "rnd,dupsid,sni=www.google.com",
           "fakeUnknown": [],
@@ -6277,7 +6277,7 @@
           "fakeStun": [],
           "fakeTls": [
             "0x00000000",
-            "^!"
+            "!"
           ],
           "fakeTlsMod": "rnd,dupsid,sni=www.google.com",
           "fakeUnknown": [],
@@ -6323,7 +6323,7 @@
           "fakeStun": [],
           "fakeTls": [
             "0x00000000",
-            "^!"
+            "!"
           ],
           "fakeTlsMod": "rnd,dupsid,sni=www.google.com",
           "fakeUnknown": [

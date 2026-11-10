@@ -85,6 +85,7 @@ public static partial class BatStrategyParser
         return result
             .Replace("%BIN%", "bin/", StringComparison.OrdinalIgnoreCase)
             .Replace("%LISTS%", "", StringComparison.OrdinalIgnoreCase)
+            .Replace("^!", "!", StringComparison.Ordinal)
             .Replace('\\', '/');
     }
 
