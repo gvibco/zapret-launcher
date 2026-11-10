@@ -1,0 +1,48 @@
+﻿<Window x:Class="ZapretLauncher.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ZapretLauncher.App.ViewModels"
+        xmlns:views="clr-namespace:ZapretLauncher.App.Views"
+        Title="Zapret Launcher" Width="1000" Height="650"
+        MinWidth="900" MinHeight="600" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackground}"
+        Foreground="{DynamicResource TextPrimary}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:StatusViewModel}">
+            <views:StatusView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StrategiesViewModel}">
+            <views:StrategiesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CoverageViewModel}">
+            <views:CoverageView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DiagnosticsViewModel}"><views:DiagnosticsView/></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}"><views:SettingsView/></DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LogsViewModel}"><views:LogsView/></DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}">
+            <StackPanel>
+                <TextBlock Text="Zapret Launcher" Foreground="White"
+                           FontSize="18" FontWeight="SemiBold" Margin="20,24,20,20"/>
+                <ListBox x:Name="Nav" Background="Transparent" BorderThickness="0"
+                         Foreground="White" SelectionChanged="Nav_SelectionChanged">
+                    <ListBoxItem Content="Статус" Tag="status" IsSelected="True" Padding="12,8"/>
+                    <ListBoxItem Content="Стратегии" Tag="strategies" Padding="12,8"/>
+                    <ListBoxItem Content="Покрытие" Tag="coverage" Padding="12,8"/>
+                    <ListBoxItem Content="Проверка" Tag="diagnostics" Padding="12,8"/>
+                    <ListBoxItem Content="Настройки" Tag="settings" Padding="12,8"/>
+                    <ListBoxItem Content="Логи" Tag="logs" Padding="12,8"/>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Column="1" Content="{Binding SelectedContent}"/>
+    </Grid>
+</Window>

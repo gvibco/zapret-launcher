@@ -1,0 +1,68 @@
+<UserControl x:Class="ZapretLauncher.App.Views.StatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28">
+            <TextBlock Text="Статус" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+            <Border Background="#FFF4E5" CornerRadius="8" Padding="12" Margin="0,0,0,16"
+                    Visibility="{Binding ShowFirstRunBanner, Converter={StaticResource BoolToVis}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Движок распакован. Перейдите в «Стратегии» и нажмите «Тест всех», чтобы выбрать рабочую."
+                               Foreground="#1A1A1A" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    <Button Content="Понятно" Command="{Binding DismissFirstRunCommand}"
+                            Margin="12,0,0,0" Padding="10,4"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource PanelBackground}" CornerRadius="10" Padding="20" Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="{Binding CurrentStrategyName}" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding EngineVersion, StringFormat=Движок {0}}"
+                                   Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+                        <TextBlock Text="{Binding NetworkName, StringFormat=Сеть: {0}}"
+                                   Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding AdminText}" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="{Binding ToggleLabel}"
+                            Command="{Binding ToggleCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}"
+                            Padding="18,10" FontSize="15"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <Button Content="Проверить сейчас" Command="{Binding CheckNowCommand}"
+                        Padding="14,8" Margin="0,0,8,0"/>
+                <Button Content="Прогнать тест" Command="{Binding RequestTestAllCommand}"
+                        Padding="14,8" Margin="0,0,8,0"/>
+                <Button Content="Обновить диагностику" Command="{Binding RefreshDiagnosticsCommand}"
+                        Padding="14,8"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                <TextBlock Text="{Binding YouTubeStatus, StringFormat=YouTube: {0}}" Margin="0,0,16,0"/>
+                <TextBlock Text="{Binding DiscordStatus, StringFormat=Discord: {0}}" Margin="0,0,16,0"/>
+                <TextBlock Text="{Binding GoogleStatus, StringFormat=Google: {0}}"/>
+            </StackPanel>
+
+            <TextBlock Text="{Binding CheckSummary}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Foreground="#B00020"
+                       Margin="0,0,0,12"/>
+
+            <TextBlock Text="Предупреждения" FontSize="16" FontWeight="SemiBold" Margin="0,8,0,8"/>
+            <ItemsControl ItemsSource="{Binding Warnings}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

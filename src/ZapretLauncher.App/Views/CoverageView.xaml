@@ -1,0 +1,93 @@
+<UserControl x:Class="ZapretLauncher.App.Views.CoverageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28">
+            <TextBlock Text="Покрытие" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+            <TextBlock Text="{Binding ListsStatus}" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <Button Content="Обновить списки" Command="{Binding UpdateListsCommand}" Padding="14,8"/>
+            </StackPanel>
+
+            <TextBlock Text="Свои домены" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBox Text="{Binding NewDomain, UpdateSourceTrigger=PropertyChanged}" Width="260"/>
+                <CheckBox Content="Только этот домен" IsChecked="{Binding NewDomainExact}" Margin="10,0,10,0"
+                          VerticalAlignment="Center"/>
+                <Button Content="Добавить" Command="{Binding AddDomainCommand}" Padding="12,4"/>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Domains}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="{Binding Domain}" Width="260"/>
+                            <TextBlock Text="(точный)" Foreground="{DynamicResource TextSecondary}" Width="80"
+                                       Visibility="{Binding Exact, Converter={StaticResource BoolToVis}}"/>
+                            <Button Content="Удалить"
+                                    Command="{Binding DataContext.RemoveDomainCommand,
+                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" Padding="8,2"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Text="Исключения" FontWeight="SemiBold" Margin="0,16,0,6"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBox Text="{Binding NewExclusion, UpdateSourceTrigger=PropertyChanged}" Width="260"/>
+                <Button Content="Добавить" Command="{Binding AddExclusionCommand}" Margin="10,0,0,0" Padding="12,4"/>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Exclusions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="{Binding}" Width="260"/>
+                            <Button Content="Удалить"
+                                    Command="{Binding DataContext.RemoveExclusionCommand,
+                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" Padding="8,2"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Text="Свои IP / подсети" FontWeight="SemiBold" Margin="0,16,0,6"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                <TextBox Text="{Binding NewIp, UpdateSourceTrigger=PropertyChanged}" Width="260"/>
+                <Button Content="Добавить" Command="{Binding AddIpCommand}" Margin="10,0,0,0" Padding="12,4"/>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Ips}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="{Binding}" Width="260"/>
+                            <Button Content="Удалить"
+                                    Command="{Binding DataContext.RemoveIpCommand,
+                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" Padding="8,2"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Text="IPSet Filter" FontWeight="SemiBold" Margin="0,16,0,6"/>
+            <ComboBox ItemsSource="{Binding IpsetModes}" SelectedItem="{Binding SelectedIpsetMode}" Width="200"/>
+            <TextBlock Text="any может ломать обычные сайты. Используйте для игр и только при необходимости."
+                       Foreground="#B36B00" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+            <TextBlock Text="Game Filter" FontWeight="SemiBold" Margin="0,16,0,6"/>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox ItemsSource="{Binding GameModes}" SelectedItem="{Binding SelectedGameMode}" Width="140"/>
+                <TextBox Text="{Binding TcpRange, UpdateSourceTrigger=PropertyChanged}" Width="140" Margin="10,0,0,0"/>
+                <TextBox Text="{Binding UdpRange, UpdateSourceTrigger=PropertyChanged}" Width="140" Margin="10,0,0,0"/>
+            </StackPanel>
+            <TextBlock Text="Формат: 1024-65535 или 1024-1934,1936-65535. При disabled используется порт 12."
+                       Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
+
+            <Button Content="Применить" Command="{Binding ApplyCommand}" Padding="18,8"
+                    HorizontalAlignment="Left" Margin="0,20,0,0"/>
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Margin="0,10,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

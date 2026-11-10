@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>ZapretLauncher.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../assets/strategies.json" LogicalName="ZapretLauncher.Core.strategies.json" />
+    <EmbeddedResource Include="../../assets/engine.zip" LogicalName="ZapretLauncher.Core.engine.zip" />
+  </ItemGroup>
+</Project>
