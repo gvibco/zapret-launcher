@@ -19,7 +19,7 @@ public partial class StatusViewModel : ObservableObject
     {
         _services = services;
         _services.Runner.StateChanged += (_, state) =>
-            Application.Current.Dispatcher.Invoke(() => IsRunning = state == BypassState.Running);
+            Application.Current.Dispatcher.BeginInvoke(() => IsRunning = state == BypassState.Running);
     }
 
     public ObservableCollection<string> Warnings { get; } = new();

@@ -16,7 +16,7 @@ public partial class LogsViewModel : ObservableObject
     {
         _services = services;
         _services.Log.LineWritten += line =>
-            Application.Current.Dispatcher.Invoke(() => AddLine(line));
+            Application.Current.Dispatcher.BeginInvoke(() => AddLine(line));
     }
 
     public ObservableCollection<string> Lines { get; } = new();
