@@ -9,6 +9,12 @@
         <DataTemplate DataType="{x:Type vm:StatusViewModel}">
             <views:StatusView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StrategiesViewModel}">
+            <views:StrategiesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CoverageViewModel}">
+            <views:CoverageView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,6 +29,8 @@
                 <ListBox x:Name="Nav" Background="Transparent" BorderThickness="0"
                          Foreground="White" SelectionChanged="Nav_SelectionChanged">
                     <ListBoxItem Content="Статус" Tag="status" IsSelected="True" Padding="12,8"/>
+                    <ListBoxItem Content="Стратегии" Tag="strategies" Padding="12,8"/>
+                    <ListBoxItem Content="Покрытие" Tag="coverage" Padding="12,8"/>
                 </ListBox>
             </StackPanel>
         </Border>

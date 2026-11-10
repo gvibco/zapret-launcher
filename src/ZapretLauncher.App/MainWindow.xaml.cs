@@ -37,6 +37,8 @@ public partial class MainWindow : Window
         viewModel.SelectedContent = item.Tag switch
         {
             "status" => viewModel.Status,
+            "strategies" => viewModel.Strategies,
+            "coverage" => viewModel.Coverage,
             _ => viewModel.Status
         };
     }
