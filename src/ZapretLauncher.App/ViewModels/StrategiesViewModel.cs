@@ -78,14 +78,19 @@ public partial class StrategiesViewModel : ObservableObject
         try
         {
             var progress = new Progress<TestProgress>(p =>
-                ProgressText = $"{p.Index}/{p.Total}: {p.StrategyName}");
+            {
+                ProgressText = $"{p.Index}/{p.Total}: {p.StrategyName}";
+                _services.Log.Write($"Test {p.Index}/{p.Total}: {p.StrategyName}");
+            });
             var extraTargets = _services.Settings.Targets
                 .Where(url => Uri.TryCreate(url, UriKind.Absolute, out _))
                 .Select(url => new ProbeTarget(url, url, false));
             var targets = SiteProbe.DefaultTargets.Concat(extraTargets).ToList();
 
+            _services.Log.Write("Test started");
             var results = await _services.Tester.TestAllAsync(
                 _services.Catalog.All, _services.BuildContext, targets, progress, _cts.Token);
+            _services.Log.Write("Test finished");
 
             foreach (var result in results)
             {

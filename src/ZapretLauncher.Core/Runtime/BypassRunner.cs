@@ -47,6 +47,7 @@ public sealed class BypassRunner : IBypassRunner, IDisposable
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
         _process = process;
+        _log.Write("winws start: process started");
         StateChanged?.Invoke(this, BypassState.Running);
         return Task.CompletedTask;
     }
@@ -60,8 +61,11 @@ public sealed class BypassRunner : IBypassRunner, IDisposable
         {
             if (!process.HasExited)
             {
+                _log.Write("winws stop: killing");
                 process.Kill(entireProcessTree: true);
+                _log.Write("winws stop: waiting for exit");
                 await process.WaitForExitAsync();
+                _log.Write("winws stop: exited");
             }
         }
         catch (InvalidOperationException)
@@ -72,6 +76,7 @@ public sealed class BypassRunner : IBypassRunner, IDisposable
         {
             process.Dispose();
             _process = null;
+            _log.Write("winws stop: done");
             StateChanged?.Invoke(this, BypassState.Stopped);
         }
     }
