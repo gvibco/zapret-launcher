@@ -1,9 +1,12 @@
 ﻿<Application x:Class="ZapretLauncher.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ZapretLauncher.App"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:ZapretLauncher.App.Converters"
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <converters:InverseBoolConverter x:Key="InverseBool"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

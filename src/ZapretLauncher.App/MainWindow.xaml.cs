@@ -1,23 +1,43 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ZapretLauncher.App.ViewModels;
 
 namespace ZapretLauncher.App;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private bool _allowClose;
+
+    public MainWindow() => InitializeComponent();
+
+    public void AllowClose() => _allowClose = true;
+
+    protected override void OnClosing(CancelEventArgs e)
     {
-        InitializeComponent();
+        if (!_allowClose)
+        {
+            if (DataContext is MainViewModel { Services.Settings.CloseToTray: true })
+            {
+                e.Cancel = true;
+                Hide();
+                return;
+            }
+
+            _allowClose = true;
+            Application.Current.Shutdown();
+        }
+        base.OnClosing(e);
+    }
+
+    private void Nav_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DataContext is not MainViewModel viewModel) return;
+        if (Nav.SelectedItem is not ListBoxItem item) return;
+        viewModel.SelectedContent = item.Tag switch
+        {
+            "status" => viewModel.Status,
+            _ => viewModel.Status
+        };
     }
 }
