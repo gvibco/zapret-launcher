@@ -7,6 +7,8 @@
             <CheckBox Content="Автозапуск при входе" IsChecked="{Binding Settings.Autostart, Mode=TwoWay}" Margin="0,4"/>
             <CheckBox Content="Стартовать свёрнутым" IsChecked="{Binding Settings.StartMinimized, Mode=TwoWay}" Margin="0,4"/>
             <CheckBox Content="Закрывать в трей" IsChecked="{Binding Settings.CloseToTray, Mode=TwoWay}" Margin="0,4"/>
+            <Button Content="Применить автозапуск" Command="{Binding ApplyAutostartCommand}"
+                    Padding="14,8" HorizontalAlignment="Left" Margin="0,8,0,0"/>
 
             <TextBlock Text="Свои цели проверки (по одной на строку)" FontWeight="SemiBold" Margin="0,16,0,6"/>
             <TextBox Text="{Binding TargetsText, UpdateSourceTrigger=PropertyChanged}"

@@ -5,7 +5,7 @@
         <StackPanel Margin="28">
             <TextBlock Text="Покрытие" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
 
-            <TextBlock Text="{Binding ListsStatus}" Foreground="#666" Margin="0,0,0,8"/>
+            <TextBlock Text="{Binding ListsStatus}" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,8"/>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <Button Content="Обновить списки" Command="{Binding UpdateListsCommand}" Padding="14,8"/>
             </StackPanel>
@@ -22,7 +22,7 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="0,2">
                             <TextBlock Text="{Binding Domain}" Width="260"/>
-                            <TextBlock Text="(точный)" Foreground="#666" Width="80"
+                            <TextBlock Text="(точный)" Foreground="{DynamicResource TextSecondary}" Width="80"
                                        Visibility="{Binding Exact, Converter={StaticResource BoolToVis}}"/>
                             <Button Content="Удалить"
                                     Command="{Binding DataContext.RemoveDomainCommand,
@@ -83,7 +83,7 @@
                 <TextBox Text="{Binding UdpRange, UpdateSourceTrigger=PropertyChanged}" Width="140" Margin="10,0,0,0"/>
             </StackPanel>
             <TextBlock Text="Формат: 1024-65535 или 1024-1934,1936-65535. При disabled используется порт 12."
-                       Foreground="#666" Margin="0,4,0,0"/>
+                       Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
 
             <Button Content="Применить" Command="{Binding ApplyCommand}" Padding="18,8"
                     HorizontalAlignment="Left" Margin="0,20,0,0"/>

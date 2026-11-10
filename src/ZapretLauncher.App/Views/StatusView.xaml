@@ -9,13 +9,13 @@
                     Visibility="{Binding ShowFirstRunBanner, Converter={StaticResource BoolToVis}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Движок распакован. Перейдите в «Стратегии» и нажмите «Тест всех», чтобы выбрать рабочую."
-                               TextWrapping="Wrap" VerticalAlignment="Center"/>
+                               Foreground="#1A1A1A" TextWrapping="Wrap" VerticalAlignment="Center"/>
                     <Button Content="Понятно" Command="{Binding DismissFirstRunCommand}"
                             Margin="12,0,0,0" Padding="10,4"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="#FFFFFF" CornerRadius="10" Padding="20" Margin="0,0,0,16">
+            <Border Background="{DynamicResource PanelBackground}" CornerRadius="10" Padding="20" Margin="0,0,0,16">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -24,10 +24,10 @@
                     <StackPanel>
                         <TextBlock Text="{Binding CurrentStrategyName}" FontSize="20" FontWeight="SemiBold"/>
                         <TextBlock Text="{Binding EngineVersion, StringFormat=Движок {0}}"
-                                   Foreground="#666" Margin="0,4,0,0"/>
+                                   Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0"/>
                         <TextBlock Text="{Binding NetworkName, StringFormat=Сеть: {0}}"
-                                   Foreground="#666" Margin="0,2,0,0"/>
-                        <TextBlock Text="{Binding AdminText}" Foreground="#666" Margin="0,2,0,0"/>
+                                   Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding AdminText}" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0"/>
                     </StackPanel>
                     <Button Grid.Column="1" Content="{Binding ToggleLabel}"
                             Command="{Binding ToggleCommand}"

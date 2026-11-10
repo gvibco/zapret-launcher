@@ -23,13 +23,15 @@
             </Grid.ColumnDefinitions>
 
             <ListBox ItemsSource="{Binding Strategies}" SelectedItem="{Binding Selected}"
-                     DisplayMemberPath="Name"/>
+                     DisplayMemberPath="Name"
+                     Background="{DynamicResource PanelBackground}"
+                     Foreground="{DynamicResource TextPrimary}"/>
 
             <StackPanel Grid.Column="1" Margin="16,0,0,0">
                 <TextBlock Text="{Binding Selected.Name}" FontSize="20" FontWeight="SemiBold"/>
-                <TextBlock Text="{Binding Selected.Modes}" Foreground="#666" Margin="0,4,0,8"/>
+                <TextBlock Text="{Binding Selected.Modes}" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,8"/>
                 <TextBlock Text="{Binding Selected.Score, StringFormat=Счёт: {0}}"/>
-                <TextBlock Text="{Binding Selected.TestedAt}" Foreground="#666" Margin="0,0,0,12"/>
+                <TextBlock Text="{Binding Selected.TestedAt}" Foreground="{DynamicResource TextSecondary}" Margin="0,0,0,12"/>
                 <Button Content="Запустить выбранную" Command="{Binding RunSelectedCommand}"
                         HorizontalAlignment="Left" Padding="14,8" Margin="0,0,0,12"/>
                 <TextBlock Text="Аргументы winws" FontWeight="SemiBold" Margin="0,0,0,6"/>
@@ -37,7 +39,9 @@
                         HorizontalAlignment="Left" Padding="10,4" Margin="0,0,0,6"/>
                 <TextBox Text="{Binding ArgsPreview, Mode=OneWay}" IsReadOnly="True"
                          AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Consolas"
-                         VerticalScrollBarVisibility="Auto" Height="260"/>
+                         VerticalScrollBarVisibility="Auto" Height="260"
+                         Background="{DynamicResource PanelBackground}"
+                         Foreground="{DynamicResource TextPrimary}"/>
             </StackPanel>
         </Grid>
 

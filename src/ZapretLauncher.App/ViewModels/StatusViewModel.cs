@@ -43,19 +43,26 @@ public partial class StatusViewModel : ObservableObject
 
     public async Task InitializeAsync()
     {
+        var networkKey = new NetworkKeyProvider().GetKey();
+        if (_services.Settings.LastGoodByNetwork.TryGetValue(networkKey, out var known)
+            && _services.Catalog.All.Any(s => s.Id == known.StrategyId))
+        {
+            _services.Settings.SelectedStrategyId = known.StrategyId;
+        }
+
         var selected = _services.Catalog.All
             .FirstOrDefault(s => s.Id == _services.Settings.SelectedStrategyId)
             ?? _services.Catalog.All[0];
         _services.Settings.SelectedStrategyId = selected.Id;
         CurrentStrategyName = selected.Name;
         EngineVersion = _services.Engine.CurrentVersion;
-        var key = new NetworkKeyProvider().GetKey().Split('|');
+        var key = networkKey.Split('|');
         NetworkName = key.Length >= 3 && key[2].Length > 0 ? key[2] : "Проводная сеть";
         AdminText = IsAdmin() ? "Администратор" : "Нет прав администратора";
-        ShowFirstRunBanner = _services.Settings.LastGoodByNetwork.Count == 0;
+        ShowFirstRunBanner = !_services.Settings.LastGoodByNetwork.ContainsKey(networkKey);
         await RefreshDiagnosticsAsync();
 
-        if (_services.Settings.Autostart)
+        if (_services.Settings.LastGoodByNetwork.ContainsKey(networkKey))
         {
             try
             {

@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ZapretLauncher.Core.Autostart;
+using ZapretLauncher.Core.Diagnostics;
 using ZapretLauncher.Core.Settings;
 
 namespace ZapretLauncher.App.ViewModels;
@@ -82,6 +84,36 @@ public partial class SettingsViewModel : ObservableObject
         finally
         {
             IsBusy = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task ApplyAutostartAsync()
+    {
+        try
+        {
+            var service = new AutostartService(new ProcessRunner());
+            var exe = Environment.ProcessPath ?? throw new InvalidOperationException("Process path is unknown.");
+            if (Settings.Autostart) await service.EnableAsync(exe);
+            else await service.DisableAsync();
+            _services.SaveSettings();
+            UpdateStatus = Settings.Autostart
+                ? "Автозапуск включён через Планировщик заданий."
+                : "Автозапуск выключен.";
+        }
+        catch (Exception ex) when (Settings.Autostart)
+        {
+            var exe = Environment.ProcessPath ?? "";
+            using var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(
+                @"Software\Microsoft\Windows\CurrentVersion\Run");
+            key?.SetValue("ZapretLauncher", $"\"{exe}\"");
+            UpdateStatus =
+                "Задача Планировщика не создана, включён автозапуск через реестр (возможен запрос UAC). "
+                + ex.Message;
+        }
+        catch (Exception ex)
+        {
+            UpdateStatus = "Ошибка автозапуска: " + ex.Message;
         }
     }
 

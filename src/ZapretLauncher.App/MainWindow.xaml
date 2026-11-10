@@ -4,7 +4,9 @@
         xmlns:vm="clr-namespace:ZapretLauncher.App.ViewModels"
         xmlns:views="clr-namespace:ZapretLauncher.App.Views"
         Title="Zapret Launcher" Width="1000" Height="650"
-        MinWidth="900" MinHeight="600" WindowStartupLocation="CenterScreen">
+        MinWidth="900" MinHeight="600" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackground}"
+        Foreground="{DynamicResource TextPrimary}">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:StatusViewModel}">
             <views:StatusView/>
@@ -25,7 +27,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="#1F2430">
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBackground}">
             <StackPanel>
                 <TextBlock Text="Zapret Launcher" Foreground="White"
                            FontSize="18" FontWeight="SemiBold" Margin="20,24,20,20"/>

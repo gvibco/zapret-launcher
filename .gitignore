@@ -3,5 +3,6 @@ obj/
 .vs/
 *.user
 build/
+dist/
 .dotnet/
 TestResults/

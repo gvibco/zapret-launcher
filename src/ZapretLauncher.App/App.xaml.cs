@@ -21,6 +21,8 @@ public partial class App : Application
             return;
         }
 
+        ThemeService.Apply(ThemeService.IsSystemDark());
+
         DispatcherUnhandledException += (_, args) =>
         {
             _services?.Log.Write(args.Exception.ToString());
@@ -40,7 +42,8 @@ public partial class App : Application
             open: OpenWindow,
             exit: ExitApplication);
 
-        if (!_services.Settings.StartMinimized) OpenWindow();
+        if (!_services.Settings.StartMinimized || _services.Settings.LastGoodByNetwork.Count == 0)
+            OpenWindow();
         _ = viewModel.InitializeAsync();
         base.OnStartup(e);
     }
