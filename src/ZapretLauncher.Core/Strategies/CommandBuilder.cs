@@ -45,7 +45,11 @@ public sealed class CommandBuilder
 
         foreach (var item in filter.Hostlist)
             args.Add("--hostlist=" + ResolveList(item, context));
-        if (filter.Hostlist.Any(h => Path.GetFileName(h).Equals("list-general.txt", StringComparison.OrdinalIgnoreCase)))
+        var hasGeneral = filter.Hostlist.Any(h =>
+            Path.GetFileName(h).Equals("list-general.txt", StringComparison.OrdinalIgnoreCase));
+        var hasGeneralUser = filter.Hostlist.Any(h =>
+            Path.GetFileName(h).Equals("list-general-user.txt", StringComparison.OrdinalIgnoreCase));
+        if (hasGeneral && !hasGeneralUser)
             args.Add("--hostlist=" + ResolveList("list-general-user.txt", context));
 
         AddJoined(args, "--hostlist-domains", filter.HostlistDomains);
