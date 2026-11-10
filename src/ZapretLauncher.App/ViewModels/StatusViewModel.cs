@@ -86,10 +86,13 @@ public partial class StatusViewModel : ObservableObject
         IsBusy = true;
         try
         {
-            if (_services.Runner.IsRunning)
+            if (IsRunning || _services.Runner.IsRunning)
             {
                 await _services.Runner.StopAsync();
-                StatusMessage = "Обход выключен.";
+                IsRunning = _services.Runner.IsRunning;
+                StatusMessage = IsRunning
+                    ? "Не удалось остановить обход."
+                    : "Обход выключен.";
                 return;
             }
 
@@ -186,6 +189,7 @@ public partial class StatusViewModel : ObservableObject
         var args = _services.Builder.Build(strategy, _services.BuildContext);
         await _services.Runner.StartAsync(
             Path.Combine(_services.EngineDir, "winws.exe"), args);
+        IsRunning = _services.Runner.IsRunning;
         CurrentStrategyName = strategy.Name;
     }
 

@@ -21,6 +21,19 @@ public class BypassRunnerTests : IDisposable
     }
 
     [Fact]
+    public async Task Stop_WithoutProcess_NotifiesStopped()
+    {
+        var runner = new BypassRunner(new LogService(_root));
+        var states = new List<BypassState>();
+        runner.StateChanged += (_, state) => states.Add(state);
+
+        await runner.StopAsync();
+
+        Assert.Contains(BypassState.Stopped, states);
+        Assert.False(runner.IsRunning);
+    }
+
+    [Fact]
     public async Task DryRun_ReturnsExitCodeAndOutput()
     {
         var runner = new BypassRunner(new LogService(_root));

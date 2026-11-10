@@ -55,7 +55,11 @@ public sealed class BypassRunner : IBypassRunner, IDisposable
     public async Task StopAsync()
     {
         var process = _process;
-        if (process is null) return;
+        if (process is null)
+        {
+            StateChanged?.Invoke(this, BypassState.Stopped);
+            return;
+        }
 
         try
         {
