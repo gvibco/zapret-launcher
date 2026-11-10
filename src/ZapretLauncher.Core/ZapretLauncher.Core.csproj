@@ -6,4 +6,7 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>ZapretLauncher.Core</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../assets/strategies.json" LogicalName="ZapretLauncher.Core.strategies.json" />
+  </ItemGroup>
 </Project>
