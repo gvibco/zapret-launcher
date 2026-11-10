@@ -15,11 +15,13 @@ public static class ThemeService
     public static void Apply(bool dark)
     {
         var app = Application.Current;
-        var existing = app.Resources.MergedDictionaries
-            .FirstOrDefault(d => d.Source?.OriginalString.Contains("Themes/") == true);
-        if (existing is not null) app.Resources.MergedDictionaries.Remove(existing);
+        var dictionaries = app.Resources.MergedDictionaries;
+        var existing = dictionaries
+            .Where(d => d.Source is { } source && IsThemePalette(source))
+            .ToList();
+        foreach (var dictionary in existing) dictionaries.Remove(dictionary);
 
-        app.Resources.MergedDictionaries.Add(new ResourceDictionary
+        dictionaries.Insert(0, new ResourceDictionary
         {
             Source = new Uri(
                 dark ? "pack://application:,,,/Themes/Dark.xaml"
@@ -27,4 +29,8 @@ public static class ThemeService
                 UriKind.Absolute)
         });
     }
+
+    private static bool IsThemePalette(Uri source) =>
+        source.OriginalString.EndsWith("Dark.xaml", StringComparison.OrdinalIgnoreCase)
+        || source.OriginalString.EndsWith("Light.xaml", StringComparison.OrdinalIgnoreCase);
 }

@@ -41,7 +41,7 @@ public partial class DiagnosticsViewModel : ObservableObject
                     probe.Name,
                     probe.Success ? "OK" : "FAIL",
                     $"{probe.ElapsedMs} ms",
-                    probe.Failure.ToString()));
+                    probe.Success ? "—" : probe.Failure.ToString()));
             }
 
             StatusText = report.HasFailures

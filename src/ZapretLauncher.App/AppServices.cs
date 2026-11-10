@@ -93,5 +93,6 @@ public sealed class AppServices : IDisposable
         Runner.Dispose();
         ProbeHttp.Dispose();
         UpdateHttp.Dispose();
+        Log.Dispose();
     }
 }

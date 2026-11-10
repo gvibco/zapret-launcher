@@ -24,6 +24,8 @@ public partial class StatusViewModel : ObservableObject
 
     public ObservableCollection<string> Warnings { get; } = new();
 
+    public bool HasWarnings => Warnings.Count > 0;
+
     [ObservableProperty] private bool isRunning;
     [ObservableProperty] private string toggleLabel = "Включить обход";
     [ObservableProperty] private string currentStrategyName = "";
@@ -141,6 +143,8 @@ public partial class StatusViewModel : ObservableObject
             Warnings.Add("IPSet Filter выключен: игры и трафик без SNI могут не обходиться.");
         if (_services.Settings.GameFilter.Mode == "disabled")
             Warnings.Add("Game Filter выключен: UDP-игры могут не работать.");
+
+        OnPropertyChanged(nameof(HasWarnings));
     }
 
     [RelayCommand]

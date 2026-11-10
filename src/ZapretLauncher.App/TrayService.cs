@@ -29,12 +29,16 @@ public sealed class TrayService : IDisposable
         var menu = new ContextMenu();
 
         var strategyMenu = new MenuItem { Header = "Стратегия" };
-        foreach (var strategy in strategies)
+        strategyMenu.SubmenuOpened += (_, _) =>
         {
-            var item = new MenuItem { Header = strategy.Name };
-            item.Click += (_, _) => select(strategy.Id);
-            strategyMenu.Items.Add(item);
-        }
+            if (strategyMenu.Items.Count > 0) return;
+            foreach (var strategy in strategies)
+            {
+                var item = new MenuItem { Header = strategy.Name };
+                item.Click += (_, _) => select(strategy.Id);
+                strategyMenu.Items.Add(item);
+            }
+        };
         menu.Items.Add(strategyMenu);
 
         menu.Items.Add(new MenuItem

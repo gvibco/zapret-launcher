@@ -50,13 +50,28 @@ public sealed class UpdateService
             info.DownloadUrl, HttpCompletionOption.ResponseHeadersRead, ct);
         response.EnsureSuccessStatusCode();
 
-        await using var stream = await response.Content.ReadAsStreamAsync(ct);
-        using var buffer = new MemoryStream();
-        await stream.CopyToAsync(buffer, ct);
-        buffer.Position = 0;
+        var tempPath = Path.Combine(
+            Path.GetTempPath(), $"zapret-update-{Guid.NewGuid():N}.zip");
+        try
+        {
+            await using (var stream = await response.Content.ReadAsStreamAsync(ct))
+            {
+                await using var file = new FileStream(
+                    tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None,
+                    bufferSize: 81920, useAsync: true);
+                await stream.CopyToAsync(file, ct);
+            }
 
-        var path = _engine.InstallUpdate(buffer, info.Version);
-        _log.Write($"Engine updated to {info.Version}");
-        return path;
+            await using var archive = new FileStream(
+                tempPath, FileMode.Open, FileAccess.Read, FileShare.Read,
+                bufferSize: 81920, useAsync: true);
+            var path = _engine.InstallUpdate(archive, info.Version);
+            _log.Write($"Engine updated to {info.Version}");
+            return path;
+        }
+        finally
+        {
+            try { File.Delete(tempPath); } catch (IOException) { }
+        }
     }
 }

@@ -2,38 +2,165 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="28">
-            <TextBlock Text="Настройки" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,16"/>
-            <CheckBox Content="Автозапуск при входе" IsChecked="{Binding Settings.Autostart, Mode=TwoWay}" Margin="0,4"/>
-            <CheckBox Content="Стартовать свёрнутым" IsChecked="{Binding Settings.StartMinimized, Mode=TwoWay}" Margin="0,4"/>
-            <CheckBox Content="Закрывать в трей" IsChecked="{Binding Settings.CloseToTray, Mode=TwoWay}" Margin="0,4"/>
-            <Button Content="Применить автозапуск" Command="{Binding ApplyAutostartCommand}"
-                    Padding="14,8" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+        <StackPanel Margin="32,28,32,30" MaxWidth="1120">
 
-            <TextBlock Text="Свои цели проверки (по одной на строку)" FontWeight="SemiBold" Margin="0,16,0,6"/>
-            <TextBox Text="{Binding TargetsText, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True" Height="80" TextWrapping="Wrap"/>
-            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                <Button Content="Сохранить" Command="{Binding SaveCommand}" Padding="14,8" Margin="0,0,8,0"/>
-                <Button Content="Открыть папку данных" Command="{Binding OpenDataFolderCommand}" Padding="14,8"/>
-            </StackPanel>
+            <TextBlock Text="Настройки" Style="{StaticResource PageTitle}"/>
+            <TextBlock Text="Поведение лаунчера, обновления и данные приложения."
+                       Style="{StaticResource PageSubtitle}"/>
 
-            <TextBlock Text="Движок" FontWeight="SemiBold" Margin="0,20,0,6"/>
-            <TextBlock Text="{Binding EngineVersion, StringFormat=Версия: {0}}"/>
-            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                <Button Content="Проверить обновления" Command="{Binding CheckUpdatesCommand}"
-                        Padding="14,8" Margin="0,0,8,0"/>
-                <Button Content="Установить обновление" Command="{Binding InstallUpdateCommand}"
-                        Padding="14,8"/>
-            </StackPanel>
-            <TextBlock Text="{Binding UpdateStatus}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            <!-- Поведение -->
+            <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="Поведение" Style="{StaticResource SectionTitle}"/>
+                    <TextBlock Text="Как лаунчер запускается и закрывается."
+                               Style="{StaticResource HintText}" Margin="0,3,0,6"/>
 
-            <TextBlock Text="{Binding DataRoot}" Foreground="{DynamicResource TextSecondary}"
-                       Margin="0,20,0,0" TextWrapping="Wrap"/>
-            <Button Content="Сбросить настройки" Command="{Binding ResetSettingsCommand}"
-                    Padding="14,8" HorizontalAlignment="Left" Margin="0,12,0,0"/>
-            <TextBlock Text="WinDivert может вызывать ложные срабатывания антивируса. Это не вирус; добавляйте исключения только если понимаете риски."
-                       TextWrapping="Wrap" Foreground="{DynamicResource TextSecondary}" Margin="0,16,0,0"/>
+                    <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="0,0,0,1" Padding="0,10">
+                        <CheckBox Style="{StaticResource ToggleSwitch}"
+                                  IsChecked="{Binding Settings.Autostart, Mode=TwoWay}">
+                            <StackPanel>
+                                <TextBlock Text="Автозапуск при входе" FontWeight="SemiBold"/>
+                                <TextBlock Text="Запускать лаунчер вместе с Windows"
+                                           Style="{StaticResource HintText}" Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+
+                    <Border BorderBrush="{DynamicResource PanelBorder}" BorderThickness="0,0,0,1" Padding="0,10">
+                        <CheckBox Style="{StaticResource ToggleSwitch}"
+                                  IsChecked="{Binding Settings.StartMinimized, Mode=TwoWay}">
+                            <StackPanel>
+                                <TextBlock Text="Стартовать свёрнутым" FontWeight="SemiBold"/>
+                                <TextBlock Text="Открывать окно только по клику на иконку в трее"
+                                           Style="{StaticResource HintText}" Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+
+                    <Border Padding="0,10,0,0">
+                        <CheckBox Style="{StaticResource ToggleSwitch}"
+                                  IsChecked="{Binding Settings.CloseToTray, Mode=TwoWay}">
+                            <StackPanel>
+                                <TextBlock Text="Закрывать в трей" FontWeight="SemiBold"/>
+                                <TextBlock Text="Обход продолжит работать после закрытия окна"
+                                           Style="{StaticResource HintText}" Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </CheckBox>
+                    </Border>
+
+                    <Button Content="Применить автозапуск" Command="{Binding ApplyAutostartCommand}"
+                            HorizontalAlignment="Left" Margin="0,14,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Цели проверки -->
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="Свои цели проверки" Style="{StaticResource SectionTitle}"/>
+                    <TextBlock Text="Добавьте адреса, которые должен проверять тест стратегий. По одному на строку."
+                               Style="{StaticResource HintText}" Margin="0,3,0,10"/>
+                    <Border Style="{StaticResource CardAlt}" Padding="4"
+                            Background="{DynamicResource InputBackground}">
+                        <TextBox Text="{Binding TargetsText, UpdateSourceTrigger=PropertyChanged}"
+                                 AcceptsReturn="True" TextWrapping="Wrap"
+                                 Height="86" BorderThickness="0" Background="Transparent"
+                                 VerticalContentAlignment="Top"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </Border>
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Content="Сохранить" Command="{Binding SaveCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"/>
+                        <Button Command="{Binding OpenDataFolderCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource Icon16}" Data="{StaticResource IconFolder}"
+                                      Stroke="{DynamicResource TextPrimary}"/>
+                                <TextBlock Text="Открыть папку данных" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Движок -->
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Движок" Style="{StaticResource SectionTitle}"/>
+                            <TextBlock Text="winws и WinDivert, которые выполняют обход."
+                                       Style="{StaticResource HintText}" Margin="0,3,0,0"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Style="{StaticResource Pill}"
+                                Background="{DynamicResource AccentSoft}"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="{Binding EngineVersion, StringFormat=Версия {0}}"
+                                       FontSize="12" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource Accent}"/>
+                        </Border>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <Button Command="{Binding CheckUpdatesCommand}" Margin="0,0,8,0"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource Icon16}" Data="{StaticResource IconRefresh}"
+                                      Stroke="{DynamicResource TextPrimary}"/>
+                                <TextBlock Text="Проверить обновления" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding InstallUpdateCommand}"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBool}}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource Icon16}" Data="{StaticResource IconDownload}"
+                                      Stroke="{DynamicResource TextPrimary}"/>
+                                <TextBlock Text="Установить обновление" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Border Style="{StaticResource CardAlt}" Margin="0,10,0,0" Padding="12,9"
+                            Visibility="{Binding UpdateStatus, Converter={StaticResource NotEmptyToVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Style="{StaticResource Icon16}" Data="{StaticResource IconInfo}"
+                                  Stroke="{DynamicResource Info}"/>
+                            <TextBlock Text="{Binding UpdateStatus}" TextWrapping="Wrap"
+                                       Margin="8,0,0,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextSecondary}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Данные -->
+            <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                    <TextBlock Text="Данные приложения" Style="{StaticResource SectionTitle}"/>
+                    <TextBlock Text="Настройки, списки и логи хранятся локально."
+                               Style="{StaticResource HintText}" Margin="0,3,0,10"/>
+                    <Border Style="{StaticResource CardAlt}" Padding="11,9"
+                            Background="{DynamicResource InputBackground}">
+                        <TextBlock Text="{Binding DataRoot}" Style="{StaticResource MonoText}"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                    <Button Content="Сбросить настройки" Command="{Binding ResetSettingsCommand}"
+                            Style="{StaticResource DangerButton}" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Примечание -->
+            <Border Margin="0,14,0,0" CornerRadius="10" Padding="14,12"
+                    Background="{DynamicResource WarningSoft}"
+                    BorderBrush="#40FFB84D" BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <Path Style="{StaticResource Icon}" Data="{StaticResource IconShieldCheck}"
+                          Stroke="{DynamicResource Warning}" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Margin="10,0,0,0"
+                               Foreground="{DynamicResource TextSecondary}"
+                               Text="WinDivert может вызывать ложные срабатывания антивируса. Это не вирус. Добавляйте исключения только если понимаете риски."/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

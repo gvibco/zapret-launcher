@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
     <AssemblyName>ZapretLauncher</AssemblyName>
     <RootNamespace>ZapretLauncher.App</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
